@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#main__main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 100vh;   
+}
+
+#main__video {
+    max-width: 800px;
+}
+
+#main__video-button {
+    background-color: gainsboro;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 200px;
+    transition-property: box-shadow;
+    transition-duration: .3s;
+    font-size: 2em;
+}
+
+#main__video-button:hover {
+    cursor: pointer;
+    box-shadow: gray 0 0 10px 10px;
+    transition-property: box-shadow;
+    transition-duration: .3s;
+}
