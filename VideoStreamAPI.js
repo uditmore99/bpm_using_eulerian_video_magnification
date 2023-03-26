@@ -5,7 +5,7 @@ const cors = require("cors");
 const fs = require("fs");
 const ffmpeg = require("ffmpeg-static");
 const { spawn } = require("child_process");
-
+var bpmVal = "";
 app.use(cors());
 
 var bodyParser = require("body-parser");
@@ -47,10 +47,12 @@ app.post("/video-stream", (req, res) => {
   PythonShell.run("eulerian-remote/main.py", options, function (err, results) {
     console.log("The script has been Started!");
     console.log(err);
-    for (var i = 0; i < results.length; i++) {
-      console.log(results[i]);
-    }
+    console.log(results[6]);
+    bpmVal = results[6];
+
     console.log("This script is executed!");
+    res.send({ bpmRes: bpmVal });
+    console.log("REQ is send from Server");
 
     //res.send({ message: results[6] });
   });

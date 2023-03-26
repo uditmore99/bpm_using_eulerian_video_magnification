@@ -4,7 +4,13 @@ const video = document.getElementById("main__video");
 const videoFile = new File(["video.mp4"], "video.mp4", { type: "video/mp4" });
 const videoBlob = new Blob([videoFile], { type: "video/mp4" });
 
-//var FileSaver = require("file-saver");
+//////////////////////////////
+
+let usermsg = document.getElementById("usermsg");
+let heartratemsg = document.getElementById("heartrate");
+let chatgptprompt = document.getElementById("chatgpt");
+let heartratetext = document.getElementById("heartRateText");
+//////////////////////////////
 
 let mediaRecorder;
 let recordedChunks = [];
@@ -26,16 +32,19 @@ function startWebcam(stream) {
   video.srcObject = stream;
 }
 
+function recordingStop() {
+  scriptEnd();
+  mediaRecorder.stop();
+  videoButton.textContent = "fetching";
+}
+
 videoButton.onclick = (e) => {
   switch (videoButton.textContent) {
     case "Record":
+      scriptStart();
       startRecording();
-      videoButton.textContent = "Stop";
-      break;
-    case "Stop":
-      videoButton.textContent = "Record";
-      mediaRecorder.stop();
-      e.preventDefault();
+      setTimeout(recordingStop, 9000);
+      videoButton.textContent = "Wait..";
       break;
   }
 };
@@ -48,39 +57,10 @@ function startRecording() {
     mimeType: "video/webm;codecs=vp9,opus",
   });
   mediaRecorder.start(4000);
-  //mediaRecorder.ondataavailable = recordVideo;
 
   mediaRecorder.addEventListener("dataavailable", function (e) {
     console.log(e.data.size);
     recordedChunks.push(e.data);
-    // e.data
-    //   .stream()
-    //   .getReader()
-    //   .read()
-    //   .then(({ done, value }) => {
-    //     // If there is no more data to read
-    //     if (done) {
-    //       console.log("done", done);
-    //       // controller.close();
-    //       return;
-    //     }
-    //     // Get the data and send it to the browser via the controller
-    //     //controller.enqueue(value);
-    //     // Check chunks by logging to the console
-    //     console.log(done, value);
-    //     // API Call
-
-    //     fetch("http://127.0.0.1:3000/video-stream", {
-    //       method: "POST",
-    //       body: JSON.stringify({ data: value }),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     })
-    //       .then((response) => response.json())
-    //       .then((data) => console.log(data))
-    //       .catch((error) => console.error(error));
-    //   });
   });
   mediaRecorder.addEventListener("stop", () => {
     const recording = new Blob(recordedChunks, {
@@ -96,99 +76,78 @@ function startRecording() {
       };
 
       reader.readAsArrayBuffer(recording);
-      
     });
     try {
       arrayPromise.then(function (array) {
         console.log("Array contains", array.byteLength, "bytes.");
-        var value = new Uint8Array(array);  
+        var value = new Uint8Array(array);
         try {
           fetch("http://127.0.0.1:3000/video-stream", {
-          method: "POST",
-          body: JSON.stringify({ data: value }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => {
-            console.log(response);
-           // response.json();
-          }
-          )
-          .then((data) => {
-            console.log(data);
-            return data.json();
+            method: "POST",
+            body: JSON.stringify({ data: value }),
+            headers: {
+              "Content-Type": "application/json",
+            },
           })
-          .catch((error) => console.error(error));
-  
+            .then((response) => {
+              console.log(response);
+              response.json().then(function (res) {
+                if (
+                  res != null &&
+                  res != undefined &&
+                  res.bpmRes != null &&
+                  res.bpmRes != undefined
+                ) {
+                  console.log(res.bpmRes);
+                  heartGIF.setAttribute("src", "heart.gif");
+                  usermsg.innerText = "";
+                  heartratetext.innerText = res.bpmRes.slice(0, 17) + " bpm";
+                  videoButton.textContent = "Start";
+                  return res.bpmRes;
+                } else {
+                  console.log("Server err!");
+                  return "";
+                }
+              });
+              return response.json;
+              // response.json();
+            })
+
+            .catch((error) => console.error(error));
         } catch (err) {
-          console.log(err)
-        }      
+          console.log(err);
+        }
       });
-      
     } catch (error) {
       console.log(error);
     }
 
-    
     recordedChunks = [];
-    console.log('process finished');
+    console.log("process finished");
   });
-}
-
-function function2() {
-  // all the stuff you want to happen after that pause
-  console.log("Blah blah blah blah extra-blah");
 }
 
 function recordVideo(event) {
   recordedChunks.push(event.data);
-  // if (event.data && event.data.size > 0) {
-  //   console.log(event.data.stream().getReader());
-
-  //   event.data
-  //     .stream()
-  //     .getReader()
-  //     .read()
-  //     .then(({ done, value }) => {
-  //       // If there is no more data to read
-  //       if (done) {
-  //         console.log("done", done);
-  //         // controller.close();
-  //         return;
-  //       }
-  //       // Get the data and send it to the browser via the controller
-  //       //controller.enqueue(value);
-  //       // Check chunks by logging to the console
-  //       console.log(done, value);
-  //       // API Call
-
-  //       fetch("http://127.0.0.1:3000/video-stream", {
-  //         method: "POST",
-  //         body: JSON.stringify({ data: value }),
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //         .then((response) => response.json())
-  //         .then((data) => console.log(data))
-  //         .catch((error) => console.error(error));
-  //     });
-
-  //   // console.log(event.data.size);
-  //   // video.srcObject = null;
-  //   // let videoUrl = URL.createObjectURL(event.data);
-  //   // video.src = videoUrl;
-  //   // alert(videoUrl);
-  // }
 }
 
-// function stopRecording() {
-//   mediaRecorder.stop();
-// }
-
-// async function handleStop(e) {
-//   //console.log(e);
-// }
-
 init();
+
+////////////////////////
+
+function scriptStart() {
+  heartratetext.innerText = "Please wait...";
+  usermsg.innerText =
+    "Please be patient while the camera is capturing the subject";
+  let heartGIF = document.createElement("img");
+  heartGIF.setAttribute("id", "heartGIF");
+  heartGIF.setAttribute("src", "heartbeat.gif");
+  heartratemsg.append(heartGIF);
+}
+
+function scriptEnd() {
+  usermsg.innerText =
+    "Looks good! Please wait while we are processing your video";
+}
+
+////////////////////////

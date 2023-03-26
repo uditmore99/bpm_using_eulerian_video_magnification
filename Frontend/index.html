@@ -1,28 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WittCode's Media Downloader</title>
-    <link rel="stylesheet" href="./style.css" />
-    <script
-  src="https://code.jquery.com/jquery-3.6.3.min.js"
-  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
-  crossorigin="anonymous"></script>
-  </head>
 
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WittCode's Media Downloader</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <div id="row1">
+    <div id="maintitle">Heartbeat detection using Eulerian Video Magnification Algorithm</div>
     <div id="main__main-container">
       <video id="main__video" playsinline autoplay loop>
         Can't load video :(
       </video>
 
       <div id="main__video-button">Record</div>
+      <div id="usermsg"></div>
     </div>
+  </div>
 
-    <script src="./script.js">
-      import { saveAs } from 'file-saver';
-    </script>
-  </body>
+  <div id="row2">
+    <div id="heartrate">
+    </div>
+    <p id="heartRateText">Heart Rate will be displayed here</p>
+    <div id="chatgpt"></div>
+  </div>
+
+
+
+  <script src="./script.js">
+    import { saveAs } from 'file-saver';
+  </script>
+</body>
+
 </html>

@@ -1,36 +1,116 @@
 * {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    /* border: orange 1px solid; */
+    font-family: 'Secular One', sans-serif;
+}
+
+body {
+    background: linear-gradient(-45deg, rgb(80, 22, 57), rgb(13, 15, 50), rgb(0, 78, 122), rgb(2, 21, 42));
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: white;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 80% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#row1 {
+
+    flex-grow: 3;
+}
+
+
+
+
+
+#maintitle {
+    font-size: x-large;
+    color: white;
+    text-align: center;
+    padding: 15px;
 }
 
 #main__main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    height: 100vh;   
+    justify-content: baseline;
+
+
 }
 
 #main__video {
-    max-width: 800px;
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    border-radius: 30px;
+    margin: 15px;
+    box-shadow: 5px 5px 30px #ffffff,
+        -5px -5px 30px #ffffff;
 }
 
 #main__video-button {
-    background-color: gainsboro;
-    height: 200px;
-    width: 200px;
-    border-radius: 50%;
+    background-color: rgb(40, 58, 88);
+    color: white;
+    height: 50px;
+    width: 100px;
+    border-radius: 10px;
     text-align: center;
-    line-height: 200px;
+    line-height: 50px;
     transition-property: box-shadow;
     transition-duration: .3s;
-    font-size: 2em;
+    font-size: larger;
+    margin-top: 30px;
 }
 
 #main__video-button:hover {
     cursor: pointer;
-    box-shadow: gray 0 0 10px 10px;
+    box-shadow: white 0 0 10px 1.5px;
     transition-property: box-shadow;
     transition-duration: .3s;
+}
+
+#usermsg {
+    padding: 30px;
+    margin: 15px;
+    font-size: larger;
+    color: #ffffff;
+}
+
+#row2 {
+
+    flex-grow: 1;
+
+    border-left: 1px white solid;
+}
+
+#heartrate {
+    margin: auto;
+    margin-top: 240px;
+    text-align: center;
+}
+
+#heartRateText {
+    text-align: center;
+}
+
+#heartGIF {
+    height: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
 }
